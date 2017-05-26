@@ -3,10 +3,15 @@
 # ID: V00759982
 # Purpose:  Computes unsmoothed unigrams and bigrams on the complete works of
 #           Shakespeare
+# Dependencies (Python Modules): sys, re, string, nltk, collections, tabulate, random
+#
+# NOTE**: An error may occur when running if the machine running this program does not have the punkt package.
+#         Uncomment lines: 14, 64 to fix
 '''
 
 import sys
 import re
+# import nltk
 from string import punctuation
 from nltk.tokenize import WordPunctTokenizer
 from nltk.tokenize import sent_tokenize
@@ -26,11 +31,7 @@ def generateAndPrintTop15(list):
     print tabulate(entry_list, headers=info)
 
 def generateNextWord(bigrams, curr_word="<s>"):
-
-    # print "".join(["curr : ", curr_word])
-
     starting_word_list = [x for x in bigrams if curr_word == x[0].split()[0]]
-    # print starting_word_list
     total = sum(x[1] for x in starting_word_list)
     prev = 0.0
     new_prob_list = []
@@ -40,25 +41,17 @@ def generateNextWord(bigrams, curr_word="<s>"):
         prev += x[1];
 
     random_percentage = uniform(0, 1) * total
-    # print total
-    # print " ".join(["random_percentage", str(random_percentage)])
     for x in new_prob_list:
-        # print x
         if random_percentage >=x[1]  and random_percentage <= x[2]:
             return x[0].split()[1]
-    # print "WORD NOT FOUND"
 
 def generateRandomSentences(num_sentences, bigrams):
     sentences = []
     for i in range(0, num_sentences):
         curr_sentence = []
         word = generateNextWord(bigrams)
-        # print word
         curr_sentence.append(word)
-        # index = 0
         while (word != "</s>"):
-            # if (index > 10):
-            #     break
             word = generateNextWord(bigrams, word)
             if (word != "</s>"):
                 curr_sentence.append(word)
@@ -68,6 +61,8 @@ def generateRandomSentences(num_sentences, bigrams):
 
 # Calling Code
 # Get all unigrams (aka words)
+# nltk.download('punkt')
+
 with open('shakespeare.txt', 'r') as f:
     sent_tokenize_list = sent_tokenize(f.read())
 
@@ -89,7 +84,7 @@ for i, sentence in enumerate(sent_tokenize_list):
 
     # For Shannons method
     tokenized_sentence = word_punct_tokenizer.tokenize(sentence)
-    # print tokenized_sentence
+    # Genereate bigrams, including adding <s> and </s> to the begining, and end of a sentence respectively
     for k, word in enumerate(tokenized_sentence):
         if (k == 0):
             shannon_bigrams_list.append(" ".join(["<s>", word]))
