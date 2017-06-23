@@ -59,7 +59,7 @@ def generateRandomSentences(num_sentences, bigrams):
         sentences.append(final_sentence)
     return sentences;
 
-# Calling Code
+'''Calling Code'''
 # Get all unigrams (aka words)
 # nltk.download('punkt')
 
@@ -101,7 +101,6 @@ shannon_bigrams_list = [ [k,v, float(v)/len(counter_shannon_bigrams_list)] for k
 
 #Unigrams
 # Count and display number of occurences of unique tokens.
-
 print "\nTop 15 Unigrams:"
 generateAndPrintTop15(unigrams_list)
 
@@ -110,7 +109,7 @@ generateAndPrintTop15(unigrams_list)
 print "\nTop 15 Bigrams:"
 generateAndPrintTop15(bigrams_list)
 
-sentences = generateRandomSentences(20, shannon_bigrams_list)
+sentences = generateRandomSentences(5, shannon_bigrams_list)
 print "\nGenerated sentences:"
 for sentence in sentences:
     print sentence

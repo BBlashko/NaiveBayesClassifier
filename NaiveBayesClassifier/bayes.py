@@ -73,6 +73,7 @@ class MyBayesClassifier():
 
             #determine best classification based on largest probability
             pred[docIndex] = classifications.argmax()
+
         return pred
 
     @property
@@ -120,7 +121,11 @@ X_train = vectorizer.fit_transform(data_train).toarray()
 X_test = vectorizer.transform(data_test).toarray()
 feature_names = vectorizer.get_feature_names()
 
+# Used to run classifier with multiple alpha values [0.1, 3.0]
+# i = 0.1
+# while i <= 3.1:
 clf = MyBayesClassifier(1)
 clf.train(X_train,y_train);
 y_pred = clf.predict(X_test)
 print np.mean((y_test-y_pred)==0)
+    # i += 0.1
